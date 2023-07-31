@@ -43,7 +43,7 @@ Azure Cache for Redis via Private Endpoints
 
 Azure Cache for Redis in a virtual network
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FCharalabosNakos%2Fweb-app-redis-sql-db%2Fmaster%2Ftemplates%2Fazuredeploy.endpoint.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FCharalamposNakos%2Fweb-app-redis-sql-db%2Fmaster%2Ftemplates%2Fazuredeploy.endpoint.json)
 
 ## Architecture
 

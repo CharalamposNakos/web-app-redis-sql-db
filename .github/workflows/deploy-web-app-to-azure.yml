@@ -19,7 +19,7 @@ on:
     branches:
       - main
 env:
-  AZURE_WEBAPP_NAME: webapprg4zkou4vr2am
+  AZURE_WEBAPP_NAME: webappgkgdl5xpis2rk
   AZURE_WEBAPP_PACKAGE_PATH: ./publish
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 3.1.x

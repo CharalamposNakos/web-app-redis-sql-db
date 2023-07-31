@@ -148,7 +148,7 @@
     },
     "imageSku": {
       "type": "string",
-      "defaultValue": "rs5-pro",
+      "defaultValue": "21h1-pro",
       "metadata": {
         "description": "Specifies the Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version."
       }

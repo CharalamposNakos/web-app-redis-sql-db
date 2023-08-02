@@ -52,9 +52,8 @@ jobs:
         MY_SECRET_ADMIN_PASSWORD: ${{ secrets.MY_SECRET_ADMIN_PASSWORD }}
       run: echo "MY_SECRET_ADMIN_PASSWORD is set in the environment."
 
-    - name: Debugging Output
-      run: |
-        echo "MY_SECRET_ADMIN_PASSWORD is: ***$MY_SECRET_ADMIN_PASSWORD***"
+    - name: Use Secret in Command
+      run: echo "The secret password is $MY_SECRET_ADMIN_PASSWORD"
 
     - name: Test
       run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build

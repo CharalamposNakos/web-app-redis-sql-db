@@ -18,6 +18,15 @@ on:
     - 'src/**'
     branches:
       - main
+- name: Set Up Environment
+        env:
+          MY_SECRET_ADMIN_PASSWORD: ${{ secrets.MY_SECRET_ADMIN_PASSWORD }}
+        run: echo "MY_SECRET_ADMIN_PASSWORD is set in the environment."
+
+      - name: Debugging Output
+        run: |
+          echo "MY_SECRET_ADMIN_PASSWORD is: ***$MY_SECRET_ADMIN_PASSWORD***"
+
 env:
   AZURE_WEBAPP_NAME: Control-Tower-Web-App007
   AZURE_WEBAPP_PACKAGE_PATH: ./publish

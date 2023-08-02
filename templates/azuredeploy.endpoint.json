@@ -485,7 +485,7 @@
     },
     "sqlServerPublicNetworkAccess": {
       "type": "string",
-      "defaultValue": "Disabled",
+      "defaultValue": "Enabled",
       "allowedValues": [
         "Enabled",
         "Disabled"

@@ -4,7 +4,7 @@
   "parameters": {
     "webAppName": {
       "type": "string",
-      "defaultValue": "[concat('webapp', uniqueString(resourceGroup().id))]",
+      "defaultValue": "WebApp",
       "metadata": {
         "description": "Specifies the name of the Web App."
       }

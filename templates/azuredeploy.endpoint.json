@@ -162,7 +162,6 @@
     },
     "adminPasswordOrKey": {
       "type": "securestring",
-      "defaultValue": "{{ secrets.MY_SECRET_ADMIN_PASSWORD }}",
       "metadata": {
         "description": "Specifies the SSH Key or password for the virtual machine. SSH key is recommended."
       }
@@ -436,7 +435,6 @@
     },
     "sqlServerAdministratorPassword": {
       "type": "securestring",
-      "defaultValue": "{{ secrets.MY_SECRET_ADMIN_PASSWORD }}",
       "metadata": {
         "description": "Specifies the password of the admin user of the SQL Server"
       }
@@ -487,7 +485,7 @@
     },
     "sqlServerPublicNetworkAccess": {
       "type": "string",
-      "defaultValue": "Enabled",
+      "defaultValue": "Disable",
       "allowedValues": [
         "Enabled",
         "Disabled"

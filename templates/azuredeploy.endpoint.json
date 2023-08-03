@@ -435,6 +435,7 @@
     },
     "sqlServerAdministratorPassword": {
       "type": "securestring",
+      "defaultValue": "${{ secrets.MY_SECRET_ADMIN_PASSWORD }}",
       "metadata": {
         "description": "Specifies the password of the admin user of the SQL Server"
       }

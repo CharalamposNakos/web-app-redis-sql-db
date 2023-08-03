@@ -162,6 +162,7 @@
     },
     "adminPasswordOrKey": {
       "type": "securestring",
+      "defaultValue": "Control%Tower2023",
       "metadata": {
         "description": "Specifies the SSH Key or password for the virtual machine. SSH key is recommended."
       }
@@ -435,7 +436,7 @@
     },
     "sqlServerAdministratorPassword": {
       "type": "securestring",
-      "defaultValue": "[environment('MY_SECRET_ADMIN_PASSWORD')]",
+      "defaultValue": "Control%Tower2023",
       "metadata": {
         "description": "Specifies the password of the admin user of the SQL Server"
       }

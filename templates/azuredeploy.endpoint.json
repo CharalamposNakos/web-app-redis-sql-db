@@ -711,13 +711,13 @@
       }
     },
     "existingWorkspaceId": {
-      "type": "string",
-      "defaultValue": "/subscriptions/<subscription_id>/resourceGroups/<resource_group_name>/providers/Microsoft.OperationalInsights/workspaces/2869814b-bd64-4cf2-a113-34048623baa8", // Replace with your existing workspace ID
-      "metadata": {
-        "description": "Resource ID of the existing Log Analytics workspace."
-      }
-    }    
-  },
+    "type": "string",
+    "defaultValue": "/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/2869814b-bd64-4cf2-a113-34048623baa8",
+    "metadata": {
+      "description": "Resource ID of the existing Log Analytics workspace."
+    }
+  }
+},
   "variables": {
     "storageBlobDNSZoneForwarder": "[concat('.blob.', environment().suffixes.storage)]",
     "sqlServerDNSZoneForwarder": "[environment().suffixes.sqlServerHostname]",

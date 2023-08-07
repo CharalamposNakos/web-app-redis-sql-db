@@ -950,7 +950,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[variables('vmId')]",
-        "[variables('workspaceId')]"
+        "[parameters('existingWorkspaceId')]"
       ],
       "properties": {
         "publisher": "Microsoft.EnterpriseCloud.Monitoring",
@@ -989,7 +989,7 @@
       "name": "[parameters('applicationInsightsName')]",
       "kind": "web",
       "dependsOn": [
-        "[variables('workspaceId')]"
+        "[parameters('existingWorkspaceId')]"
       ],
       "properties": {
         "Application_Type": "web",
@@ -1333,7 +1333,7 @@
           "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('bastionHostId')]",
-            "[variables('workspaceId')]"
+            "[parameters('existingWorkspaceId')]"
           ],
           "properties": {
             "workspaceId": "[variables('workspaceId')]",
@@ -1417,7 +1417,7 @@
           "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('vmSubnetNsgId')]",
-            "[variables('workspaceId')]"
+            "[parameters('existingWorkspaceId')]"
           ],
           "properties": {
             "workspaceId": "[variables('workspaceId')]",
@@ -1521,7 +1521,7 @@
           "name": "Microsoft.Insights/service",
           "dependsOn": [
             "[variables('hostingPlanId')]",
-            "[variables('workspaceId')]"
+            "[parameters('existingWorkspaceId')]"
           ],
           "properties": {
             "mode": "Incremental",
@@ -1603,7 +1603,7 @@
           "apiVersion": "2017-05-01-preview",
           "dependsOn": [
             "[variables('webAppId')]",
-            "[variables('workspaceId')]"
+            "[parameters('existingWorkspaceId')]"
           ],
           "properties": {
             "workspaceId": "[variables('workspaceId')]",
@@ -1716,7 +1716,7 @@
           "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('redisCacheId')]",
-            "[variables('workspaceId')]"
+            "[parameters('existingWorkspaceId')]"
           ],
           "properties": {
             "workspaceId": "[variables('workspaceId')]",
@@ -1804,7 +1804,7 @@
               "location": "[parameters('location')]",
               "dependsOn": [
                 "[variables('sqlServerDatabaseId')]",
-                "[variables('workspaceId')]"
+                "[parameters('existingWorkspaceId')]"
               ],
               "properties": {
                 "workspaceId": "[variables('workspaceId')]",
@@ -1972,7 +1972,7 @@
           "apiVersion": "2017-05-01-preview",
           "dependsOn": [
             "[variables('keyVaultId')]",
-            "[variables('workspaceId')]"
+            "[parameters('existingWorkspaceId')]"
           ],
           "properties": {
             "workspaceId": "[variables('workspaceId')]",
@@ -1996,6 +1996,6 @@
       ]
     }
   ],
-  "outputs": {  
+  "outputs": {
   }
 }

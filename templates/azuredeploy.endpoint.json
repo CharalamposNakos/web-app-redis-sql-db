@@ -940,7 +940,7 @@
           "stopOnMultipleConnections": false
         },
         "protectedSettings": {
-          "workspaceKey": "[listKeys(variables('workspaceId'),'2020-08-01').primarySharedKey]"
+          "workspaceKey": "[listKeys(parameters('existingWorkspaceId'), '2020-08-01').primarySharedKey]"
         }
       }
     },

@@ -936,7 +936,7 @@
         "typeHandlerVersion": "1.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "workspaceKey": "[listKeys('/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/log-analytics-demo', '2020-08-01').primarySharedKey]",
+          "workspaceId": "[listKeys('/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/log-analytics-demo', '2020-08-01').primarySharedKey]",
           "stopOnMultipleConnections": false
         },
         "protectedSettings": {

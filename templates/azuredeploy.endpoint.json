@@ -734,7 +734,7 @@
     },
       "existingWorkspaceId": {
       "type": "string",
-      "defaultValue": "/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/41851a05-3e8b-4e17-854c-ea45b8080f4a",
+      "defaultValue": "/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/log-analytics-demo",
       "metadata": {
         "description": "Resource ID of the existing Log Analytics workspace."
       }

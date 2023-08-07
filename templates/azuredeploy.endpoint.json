@@ -320,6 +320,28 @@
         "description": "Specifies the name of the Azure Bastion resource."
       }
     },
+    "workspaceName": {
+      "type": "string",
+      "defaultValue": "log-analytics-demo",
+      "metadata": {
+        "description": "Specifies the globally unique name of the Log Analytics workspace."
+      }
+    },
+    "workspaceSku": {
+      "type": "string",
+      "allowedValues": [
+        "PerGB2018",
+        "Free",
+        "Standalone",
+        "PerNode",
+        "Standard",
+        "Premium"
+      ],
+      "defaultValue": "PerGB2018",
+      "metadata": {
+        "description": "Specifies the SKU of the Log Analytics workspace."
+      }
+    },
     "redisCacheName": {
       "type": "string",
       "defaultValue": "[concat('cache', uniqueString(resourceGroup().id))]",
@@ -710,14 +732,14 @@
         "description": "Specify a boolean value that indicates whether to allow access via non-SSL ports."
       }
     },
-    "existingWorkspaceId": {
-    "type": "string",
-    "defaultValue": "/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/41851a05-3e8b-4e17-854c-ea45b8080f4a",
-    "metadata": {
-      "description": "Resource ID of the existing Log Analytics workspace."
+      "existingWorkspaceId": {
+      "type": "string",
+      "defaultValue": "/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/41851a05-3e8b-4e17-854c-ea45b8080f4a",
+      "metadata": {
+        "description": "Resource ID of the existing Log Analytics workspace."
+      }
     }
-  }
-},
+  },
   "variables": {
     "storageBlobDNSZoneForwarder": "[concat('.blob.', environment().suffixes.storage)]",
     "sqlServerDNSZoneForwarder": "[environment().suffixes.sqlServerHostname]",
@@ -936,11 +958,11 @@
         "typeHandlerVersion": "1.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "workspaceId": "[listKeys('/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/log-analytics-demo', '2020-08-01').primarySharedKey]",
+          "workspaceId": "[reference(variables('workspaceId'), '2020-08-01').customerId]",
           "stopOnMultipleConnections": false
         },
         "protectedSettings": {
-          "workspaceKey": "[listKeys(parameters('existingWorkspaceId'), '2020-08-01').primarySharedKey]"
+          "workspaceKey": "[listKeys(variables('workspaceId'),'2020-08-01').primarySharedKey]"
         }
       }
     },

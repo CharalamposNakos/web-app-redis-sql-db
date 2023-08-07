@@ -731,13 +731,6 @@
       "metadata": {
         "description": "Specify a boolean value that indicates whether to allow access via non-SSL ports."
       }
-    },
-      "existingWorkspaceId": {
-      "type": "string",
-      "defaultValue": "/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/log-analytics-demo",
-      "metadata": {
-        "description": "Resource ID of the existing Log Analytics workspace."
-      }
     }
   },
   "variables": {
@@ -783,7 +776,7 @@
     "webAppId": "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]",
     "hostingPlanId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
 
-    "workspaceId": "[parameters('existingWorkspaceId')]",
+    "workspaceId":"[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]",
     "applicationInsightsId": "[resourceId('Microsoft.Insights/components', parameters('applicationInsightsName'))]",
 
     "virtualMachineSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('virtualMachineSubnetName'))]",
@@ -950,7 +943,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[variables('vmId')]",
-        "[parameters('existingWorkspaceId')]"
+        "[variables('workspaceId')]"
       ],
       "properties": {
         "publisher": "Microsoft.EnterpriseCloud.Monitoring",
@@ -989,7 +982,7 @@
       "name": "[parameters('applicationInsightsName')]",
       "kind": "web",
       "dependsOn": [
-        "[parameters('existingWorkspaceId')]"
+        "[variables('workspaceId')]"
       ],
       "properties": {
         "Application_Type": "web",
@@ -1333,7 +1326,7 @@
           "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('bastionHostId')]",
-            "[parameters('existingWorkspaceId')]"
+            "[variables('workspaceId')]"
           ],
           "properties": {
             "workspaceId": "[variables('workspaceId')]",
@@ -1417,7 +1410,7 @@
           "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('vmSubnetNsgId')]",
-            "[parameters('existingWorkspaceId')]"
+            "[variables('workspaceId')]"
           ],
           "properties": {
             "workspaceId": "[variables('workspaceId')]",
@@ -1521,7 +1514,7 @@
           "name": "Microsoft.Insights/service",
           "dependsOn": [
             "[variables('hostingPlanId')]",
-            "[parameters('existingWorkspaceId')]"
+            "[variables('workspaceId')]"
           ],
           "properties": {
             "mode": "Incremental",
@@ -1603,7 +1596,7 @@
           "apiVersion": "2017-05-01-preview",
           "dependsOn": [
             "[variables('webAppId')]",
-            "[parameters('existingWorkspaceId')]"
+            "[variables('workspaceId')]"
           ],
           "properties": {
             "workspaceId": "[variables('workspaceId')]",
@@ -1716,7 +1709,7 @@
           "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('redisCacheId')]",
-            "[parameters('existingWorkspaceId')]"
+            "[variables('workspaceId')]"
           ],
           "properties": {
             "workspaceId": "[variables('workspaceId')]",
@@ -1804,7 +1797,7 @@
               "location": "[parameters('location')]",
               "dependsOn": [
                 "[variables('sqlServerDatabaseId')]",
-                "[parameters('existingWorkspaceId')]"
+                "[variables('workspaceId')]"
               ],
               "properties": {
                 "workspaceId": "[variables('workspaceId')]",
@@ -1972,7 +1965,7 @@
           "apiVersion": "2017-05-01-preview",
           "dependsOn": [
             "[variables('keyVaultId')]",
-            "[parameters('existingWorkspaceId')]"
+            "[variables('workspaceId')]"
           ],
           "properties": {
             "workspaceId": "[variables('workspaceId')]",

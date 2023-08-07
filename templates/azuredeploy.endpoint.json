@@ -775,8 +775,7 @@
 
     "webAppId": "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]",
     "hostingPlanId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
-
-    "workspaceId": "/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/log-analytics-demo",
+    "workspaceId":"/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/log-analytics-demo",
     "applicationInsightsId": "[resourceId('Microsoft.Insights/components', parameters('applicationInsightsName'))]",
 
     "virtualMachineSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('virtualMachineSubnetName'))]",

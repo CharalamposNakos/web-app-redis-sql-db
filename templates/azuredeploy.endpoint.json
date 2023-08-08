@@ -320,28 +320,6 @@
         "description": "Specifies the name of the Azure Bastion resource."
       }
     },
-    // "workspaceName": {
-    //   "type": "string",
-    //   "defaultValue": "log-analytics-demo",
-    //   "metadata": {
-    //     "description": "Specifies the globally unique name of the Log Analytics workspace."
-    //   }
-    // },
-    // "workspaceSku": {
-    //   "type": "string",
-    //   "allowedValues": [
-    //     "PerGB2018",
-    //     "Free",
-    //     "Standalone",
-    //     "PerNode",
-    //     "Standard",
-    //     "Premium"
-    //   ],
-    //   "defaultValue": "PerGB2018",
-    //   "metadata": {
-    //     "description": "Specifies the SKU of the Log Analytics workspace."
-    //   }
-    // },
     "redisCacheName": {
       "type": "string",
       "defaultValue": "[concat('cache', uniqueString(resourceGroup().id))]",
@@ -775,7 +753,8 @@
 
     "webAppId": "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]",
     "hostingPlanId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
-    "workspaceId":"/subscriptions/b6ab40a1-b146-4ecd-b698-1643be5ed215/resourceGroups/log-analytics-rg/providers/Microsoft.OperationalInsights/workspaces/log-analytics-demo",
+
+    // "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]",
     "applicationInsightsId": "[resourceId('Microsoft.Insights/components', parameters('applicationInsightsName'))]",
 
     "virtualMachineSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('virtualMachineSubnetName'))]",
@@ -941,8 +920,8 @@
       "name": "[concat(parameters('vmName'), '/MicrosoftMonitoringAgent')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[variables('vmId')]",
-        "[variables('workspaceId')]"
+        "[variables('vmId')]"
+        // "[variables('workspaceId')]"
       ],
       "properties": {
         "publisher": "Microsoft.EnterpriseCloud.Monitoring",
@@ -950,11 +929,11 @@
         "typeHandlerVersion": "1.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          "workspaceId": "[reference(variables('workspaceId'), '2020-08-01').customerId]",
+          // "workspaceId": "[reference(variables('workspaceId'), '2020-08-01').customerId]",
           "stopOnMultipleConnections": false
         },
         "protectedSettings": {
-          "workspaceKey": "[listKeys(variables('workspaceId'),'2020-08-01').primarySharedKey]"
+          // "workspaceKey": "[listKeys(variables('workspaceId'),'2020-08-01').primarySharedKey]"
         }
       }
     },
@@ -964,8 +943,8 @@
       "name": "[concat(parameters('vmName'), '/DependencyAgent')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[variables('vmId')]",
-        "[variables('workspaceId')]"
+        "[variables('vmId')]"
+        // "[variables('workspaceId')]"
       ],
       "properties": {
         "publisher": "Microsoft.Azure.Monitoring.DependencyAgent",
@@ -1279,13 +1258,13 @@
       "name": "[parameters('applicationInsightsName')]",
       "kind": "web",
       "dependsOn": [
-        "[variables('workspaceId')]"
+        // "[variables('workspaceId')]"
       ],
       "properties": {
         "Application_Type": "web",
         "SamplingPercentage": 100,
         "DisableIpMasking": true,
-        "WorkspaceResourceId": "[variables('workspaceId')]",
+        // "WorkspaceResourceId": "[variables('workspaceId')]",
         "publicNetworkAccessForIngestion": "[parameters('publicNetworkAccessForIngestion')]",
         "publicNetworkAccessForQuery": "[parameters('publicNetworkAccessForQuery')]",
         "IngestionMode": "[parameters('ingestionMode')]"
@@ -1622,11 +1601,11 @@
           "name": "Microsoft.Insights/default",
           "location": "[parameters('location')]",
           "dependsOn": [
-            "[variables('bastionHostId')]",
-            "[variables('workspaceId')]"
+            "[variables('bastionHostId')]"
+            // "[variables('workspaceId')]"
           ],
           "properties": {
-            "workspaceId": "[variables('workspaceId')]",
+            // "workspaceId": "[variables('workspaceId')]",
             "metrics": [],
             "logs": [
               {
@@ -1706,11 +1685,11 @@
           "name": "Microsoft.Insights/diagnosticSettings",
           "location": "[parameters('location')]",
           "dependsOn": [
-            "[variables('vmSubnetNsgId')]",
-            "[variables('workspaceId')]"
+            "[variables('vmSubnetNsgId')]"
+            // "[variables('workspaceId')]"
           ],
           "properties": {
-            "workspaceId": "[variables('workspaceId')]",
+            // "workspaceId": "[variables('workspaceId')]",
             "metrics": [],
             "logs": [
               {
@@ -1810,12 +1789,12 @@
           "type": "providers/diagnosticSettings",
           "name": "Microsoft.Insights/service",
           "dependsOn": [
-            "[variables('hostingPlanId')]",
-            "[variables('workspaceId')]"
+            "[variables('hostingPlanId')]"
+            // "[variables('workspaceId')]"
           ],
           "properties": {
             "mode": "Incremental",
-            "workspaceId": "[variables('workspaceId')]",
+            // "workspaceId": "[variables('workspaceId')]",
             "logs": [],
             "metrics": [
               {
@@ -1892,11 +1871,11 @@
           "name": "Microsoft.Insights/service",
           "apiVersion": "2017-05-01-preview",
           "dependsOn": [
-            "[variables('webAppId')]",
-            "[variables('workspaceId')]"
+            "[variables('webAppId')]"
+            // "[variables('workspaceId')]"
           ],
           "properties": {
-            "workspaceId": "[variables('workspaceId')]",
+            // "workspaceId": "[variables('workspaceId')]",
             "logs": [
               {
                 "category": "AppServiceAntivirusScanAuditLogs",
@@ -2005,11 +1984,11 @@
           "name": "Microsoft.Insights/diagnosticSettings",
           "location": "[parameters('location')]",
           "dependsOn": [
-            "[variables('redisCacheId')]",
-            "[variables('workspaceId')]"
+            "[variables('redisCacheId')]"
+            // "[variables('workspaceId')]"
           ],
           "properties": {
-            "workspaceId": "[variables('workspaceId')]",
+            // "workspaceId": "[variables('workspaceId')]",
             "metrics": [
               {
                 "category": "AllMetrics",
@@ -2093,11 +2072,11 @@
               "name": "Microsoft.Insights/diagnosticSettings",
               "location": "[parameters('location')]",
               "dependsOn": [
-                "[variables('sqlServerDatabaseId')]",
-                "[variables('workspaceId')]"
+                "[variables('sqlServerDatabaseId')]"
+                // "[variables('workspaceId')]"
               ],
               "properties": {
-                "workspaceId": "[variables('workspaceId')]",
+                // "workspaceId": "[variables('workspaceId')]",
                 "metrics": [
                   {
                     "category": "Basic",
@@ -2261,11 +2240,11 @@
           "name": "Microsoft.Insights/service",
           "apiVersion": "2017-05-01-preview",
           "dependsOn": [
-            "[variables('keyVaultId')]",
-            "[variables('workspaceId')]"
+            "[variables('keyVaultId')]"
+            // "[variables('workspaceId')]"
           ],
           "properties": {
-            "workspaceId": "[variables('workspaceId')]",
+            // "workspaceId": "[variables('workspaceId')]",
             "logs": [
               {
                 "category": "AuditEvent",

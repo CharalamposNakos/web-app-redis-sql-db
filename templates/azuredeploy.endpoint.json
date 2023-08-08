@@ -320,6 +320,28 @@
         "description": "Specifies the name of the Azure Bastion resource."
       }
     },
+    "workspaceName": {
+      "type": "string",
+      "defaultValue": "[concat('loganalytics', uniqueString(resourceGroup().id))]",
+      "metadata": {
+        "description": "Specifies the globally unique name of the Log Analytics workspace."
+      }
+    },
+    "workspaceSku": {
+      "type": "string",
+      "allowedValues": [
+        "PerGB2018",
+        "Free",
+        "Standalone",
+        "PerNode",
+        "Standard",
+        "Premium"
+      ],
+      "defaultValue": "PerGB2018",
+      "metadata": {
+        "description": "Specifies the SKU of the Log Analytics workspace."
+      }
+    },
     "redisCacheName": {
       "type": "string",
       "defaultValue": "[concat('cache', uniqueString(resourceGroup().id))]",
@@ -754,7 +776,7 @@
     "webAppId": "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]",
     "hostingPlanId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
 
-    // "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]",
+    "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]",
     "applicationInsightsId": "[resourceId('Microsoft.Insights/components', parameters('applicationInsightsName'))]",
 
     "virtualMachineSubnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('virtualMachineSubnetName'))]",
@@ -920,8 +942,8 @@
       "name": "[concat(parameters('vmName'), '/MicrosoftMonitoringAgent')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[variables('vmId')]"
-        // "[variables('workspaceId')]"
+        "[variables('vmId')]",
+        "[variables('workspaceId')]"
       ],
       "properties": {
         "publisher": "Microsoft.EnterpriseCloud.Monitoring",
@@ -929,11 +951,11 @@
         "typeHandlerVersion": "1.0",
         "autoUpgradeMinorVersion": true,
         "settings": {
-          // "workspaceId": "[reference(variables('workspaceId'), '2020-08-01').customerId]",
+          "workspaceId": "[reference(variables('workspaceId'), '2020-08-01').customerId]",
           "stopOnMultipleConnections": false
         },
         "protectedSettings": {
-          // "workspaceKey": "[listKeys(variables('workspaceId'),'2020-08-01').primarySharedKey]"
+          "workspaceKey": "[listKeys(variables('workspaceId'),'2020-08-01').primarySharedKey]"
         }
       }
     },
@@ -943,8 +965,8 @@
       "name": "[concat(parameters('vmName'), '/DependencyAgent')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[variables('vmId')]"
-        // "[variables('workspaceId')]"
+        "[variables('vmId')]",
+        "[variables('workspaceId')]"
       ],
       "properties": {
         "publisher": "Microsoft.Azure.Monitoring.DependencyAgent",
@@ -953,304 +975,304 @@
         "autoUpgradeMinorVersion": true
       }
     },
-    // {
-    //   "apiVersion": "2020-08-01",
-    //   "type": "Microsoft.OperationalInsights/workspaces",
-    //   "name": "[parameters('workspaceName')]",
-    //   "location": "[parameters('location')]",
-    //   "properties": {
-    //     "sku": {
-    //       "name": "[parameters('workspaceSku')]"
-    //     }
-    //   },
-    //   "resources": [
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsLogicalDiskAvgDiskSecTransfer",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "LogicalDisk",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Avg. Disk sec/Transfer"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsLogicalDiskDiskReadBytesSec",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "LogicalDisk",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Disk Read Bytes/sec"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsLogicalDiskDiskTransfersSec",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "LogicalDisk",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Disk Transfers/sec"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsLogicalDiskDiskWritesSec",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "LogicalDisk",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Average_Disk Writes/sec"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsLogicalDiskFreeMegabytes",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "LogicalDisk",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Free Megabytes"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsMemoryAvailableMBytes",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "Memory",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Available MBytes Memory"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsMemoryPercentageUsedMemory",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "Memory",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Average_% Used Memory"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsNetworkAdapterTotalBytesReceived",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "Network Adapter",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Total Bytes Received"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsNetworkAdapterTotalBytesTransmitted",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "Network Adapter",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Total Bytes Transmitted"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsNetworkAdapterTotalBytes",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "Network Adapter",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Total Bytes"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsProcessorPctProcessorTimeTotal",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "Processor",
-    //         "instanceName": "_Total",
-    //         "intervalSeconds": 10,
-    //         "counterName": "% Processor Time"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsLogicalDiskCurrentDiskQueueLength",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "LogicalDisk",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Average_Current Disk Queue Length"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsLogicalDiskDiskReadsSec",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "LogicalDisk",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Disk Reads/sec"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsASPNETApplicationsRequestsSec",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "ASP.NET Applications",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Requests/Sec"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsASPNETApplicationsRequestExecutionTime",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "ASP.NET Applications",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Request Execution Time"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsASPNETApplicationsRequestsExecuting",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "ASP.NET Applications",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Requests Executing"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsASPNETApplicationsRequestsInApplicationQueue",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "ASP.NET Applications",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Requests In Application Queue"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsASPNETApplicationsRequestsTimedOut",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "ASP.NET Applications",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Requests Timed Out"
-    //       }
-    //     },
-    //     {
-    //       "apiVersion": "2020-08-01",
-    //       "type": "dataSources",
-    //       "name": "VMInsightsASPNETApplicationsErrorsTotalSec",
-    //       "dependsOn": [
-    //         "[variables('workspaceId')]"
-    //       ],
-    //       "kind": "WindowsPerformanceCounter",
-    //       "properties": {
-    //         "objectName": "ASP.NET Applications",
-    //         "instanceName": "*",
-    //         "intervalSeconds": 10,
-    //         "counterName": "Errors Total/Sec"
-    //       }
-    //     }
-    //   ]
-    // },
+    {
+      "apiVersion": "2020-08-01",
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "name": "[parameters('workspaceName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "sku": {
+          "name": "[parameters('workspaceSku')]"
+        }
+      },
+      "resources": [
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsLogicalDiskAvgDiskSecTransfer",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "LogicalDisk",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Avg. Disk sec/Transfer"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsLogicalDiskDiskReadBytesSec",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "LogicalDisk",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Disk Read Bytes/sec"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsLogicalDiskDiskTransfersSec",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "LogicalDisk",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Disk Transfers/sec"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsLogicalDiskDiskWritesSec",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "LogicalDisk",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Average_Disk Writes/sec"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsLogicalDiskFreeMegabytes",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "LogicalDisk",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Free Megabytes"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsMemoryAvailableMBytes",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "Memory",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Available MBytes Memory"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsMemoryPercentageUsedMemory",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "Memory",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Average_% Used Memory"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsNetworkAdapterTotalBytesReceived",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "Network Adapter",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Total Bytes Received"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsNetworkAdapterTotalBytesTransmitted",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "Network Adapter",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Total Bytes Transmitted"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsNetworkAdapterTotalBytes",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "Network Adapter",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Total Bytes"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsProcessorPctProcessorTimeTotal",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "Processor",
+            "instanceName": "_Total",
+            "intervalSeconds": 10,
+            "counterName": "% Processor Time"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsLogicalDiskCurrentDiskQueueLength",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "LogicalDisk",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Average_Current Disk Queue Length"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsLogicalDiskDiskReadsSec",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "LogicalDisk",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Disk Reads/sec"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsASPNETApplicationsRequestsSec",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "ASP.NET Applications",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Requests/Sec"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsASPNETApplicationsRequestExecutionTime",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "ASP.NET Applications",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Request Execution Time"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsASPNETApplicationsRequestsExecuting",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "ASP.NET Applications",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Requests Executing"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsASPNETApplicationsRequestsInApplicationQueue",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "ASP.NET Applications",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Requests In Application Queue"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsASPNETApplicationsRequestsTimedOut",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "ASP.NET Applications",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Requests Timed Out"
+          }
+        },
+        {
+          "apiVersion": "2020-08-01",
+          "type": "dataSources",
+          "name": "VMInsightsASPNETApplicationsErrorsTotalSec",
+          "dependsOn": [
+            "[variables('workspaceId')]"
+          ],
+          "kind": "WindowsPerformanceCounter",
+          "properties": {
+            "objectName": "ASP.NET Applications",
+            "instanceName": "*",
+            "intervalSeconds": 10,
+            "counterName": "Errors Total/Sec"
+          }
+        }
+      ]
+    },
     {
       "type": "Microsoft.Insights/components",
       "apiVersion": "2020-02-02-preview",
@@ -1258,13 +1280,13 @@
       "name": "[parameters('applicationInsightsName')]",
       "kind": "web",
       "dependsOn": [
-        // "[variables('workspaceId')]"
+        "[variables('workspaceId')]"
       ],
       "properties": {
         "Application_Type": "web",
         "SamplingPercentage": 100,
         "DisableIpMasking": true,
-        // "WorkspaceResourceId": "[variables('workspaceId')]",
+        "WorkspaceResourceId": "[variables('workspaceId')]",
         "publicNetworkAccessForIngestion": "[parameters('publicNetworkAccessForIngestion')]",
         "publicNetworkAccessForQuery": "[parameters('publicNetworkAccessForQuery')]",
         "IngestionMode": "[parameters('ingestionMode')]"
@@ -1601,11 +1623,11 @@
           "name": "Microsoft.Insights/default",
           "location": "[parameters('location')]",
           "dependsOn": [
-            "[variables('bastionHostId')]"
-            // "[variables('workspaceId')]"
+            "[variables('bastionHostId')]",
+            "[variables('workspaceId')]"
           ],
           "properties": {
-            // "workspaceId": "[variables('workspaceId')]",
+            "workspaceId": "[variables('workspaceId')]",
             "metrics": [],
             "logs": [
               {
@@ -1685,11 +1707,11 @@
           "name": "Microsoft.Insights/diagnosticSettings",
           "location": "[parameters('location')]",
           "dependsOn": [
-            "[variables('vmSubnetNsgId')]"
-            // "[variables('workspaceId')]"
+            "[variables('vmSubnetNsgId')]",
+            "[variables('workspaceId')]"
           ],
           "properties": {
-            // "workspaceId": "[variables('workspaceId')]",
+            "workspaceId": "[variables('workspaceId')]",
             "metrics": [],
             "logs": [
               {
@@ -1789,12 +1811,12 @@
           "type": "providers/diagnosticSettings",
           "name": "Microsoft.Insights/service",
           "dependsOn": [
-            "[variables('hostingPlanId')]"
-            // "[variables('workspaceId')]"
+            "[variables('hostingPlanId')]",
+            "[variables('workspaceId')]"
           ],
           "properties": {
             "mode": "Incremental",
-            // "workspaceId": "[variables('workspaceId')]",
+            "workspaceId": "[variables('workspaceId')]",
             "logs": [],
             "metrics": [
               {
@@ -1871,11 +1893,11 @@
           "name": "Microsoft.Insights/service",
           "apiVersion": "2017-05-01-preview",
           "dependsOn": [
-            "[variables('webAppId')]"
-            // "[variables('workspaceId')]"
+            "[variables('webAppId')]",
+            "[variables('workspaceId')]"
           ],
           "properties": {
-            // "workspaceId": "[variables('workspaceId')]",
+            "workspaceId": "[variables('workspaceId')]",
             "logs": [
               {
                 "category": "AppServiceAntivirusScanAuditLogs",
@@ -1984,11 +2006,11 @@
           "name": "Microsoft.Insights/diagnosticSettings",
           "location": "[parameters('location')]",
           "dependsOn": [
-            "[variables('redisCacheId')]"
-            // "[variables('workspaceId')]"
+            "[variables('redisCacheId')]",
+            "[variables('workspaceId')]"
           ],
           "properties": {
-            // "workspaceId": "[variables('workspaceId')]",
+            "workspaceId": "[variables('workspaceId')]",
             "metrics": [
               {
                 "category": "AllMetrics",
@@ -2072,11 +2094,11 @@
               "name": "Microsoft.Insights/diagnosticSettings",
               "location": "[parameters('location')]",
               "dependsOn": [
-                "[variables('sqlServerDatabaseId')]"
-                // "[variables('workspaceId')]"
+                "[variables('sqlServerDatabaseId')]",
+                "[variables('workspaceId')]"
               ],
               "properties": {
-                // "workspaceId": "[variables('workspaceId')]",
+                "workspaceId": "[variables('workspaceId')]",
                 "metrics": [
                   {
                     "category": "Basic",
@@ -2240,11 +2262,11 @@
           "name": "Microsoft.Insights/service",
           "apiVersion": "2017-05-01-preview",
           "dependsOn": [
-            "[variables('keyVaultId')]"
-            // "[variables('workspaceId')]"
+            "[variables('keyVaultId')]",
+            "[variables('workspaceId')]"
           ],
           "properties": {
-            // "workspaceId": "[variables('workspaceId')]",
+            "workspaceId": "[variables('workspaceId')]",
             "logs": [
               {
                 "category": "AuditEvent",

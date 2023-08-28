@@ -569,8 +569,7 @@
     "retentionPolicy": {
       "type": "object",
       "defaultValue": {
-        "enabled": true,
-        "days": 90
+        "enabled": true
       },
       "metadata": {
         "description": "Specifies the retention policy."

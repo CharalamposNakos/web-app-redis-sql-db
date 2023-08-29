@@ -20,7 +20,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy SQL Database Schema
-        uses: azure/sql-action@v1
+        uses: azure/sql-action@v2
         with:
           server-name: sqlserver52om2hxcjlm5m.database.windows.net
           connection-string: ${{ secrets.DB_CONNECTION_STRING }}

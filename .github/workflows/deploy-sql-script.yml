@@ -1,0 +1,28 @@
+name: Deploy SQL Database Schema
+
+on:
+  workflow_dispatch:
+
+env:
+  SQL_SCRIPT_PATH: 'sql/ProductsDb.sql'  # Path to SQL script here
+
+jobs:
+  deploy-database:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Azure Login action for authentication
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy SQL Database Schema
+        uses: azure/sql-action@v1
+        with:
+          server-name: sqlserver52om2hxcjlm5m.database.windows.net
+          connection-string: ${{ secrets.DB_CONNECTION_STRING }}
+          sql-file-path: ${{ env.SQL_SCRIPT_PATH }} 
+          run: yes  # To execute the SQL script

@@ -28,32 +28,37 @@ jobs:
       - name: Get SQL Server Name
         id: get-sql-server-name
         run: |
-          SQL_SERVER_NAME=$(az graph query -q "resources | where type == 'microsoft.sql/servers' | where resourceGroup == '$RESOURCE_GROUP' | project name" --output tsv)
-          echo "SQL_SERVER_NAME=$SQL_SERVER_NAME" >> $GITHUB_ENV
+          $SQL_SERVER_NAME = & az graph query -q "resources | where type == 'microsoft.sql/servers' | where resourceGroup == '$env:RESOURCE_GROUP' | project name" --output tsv
+          Write-Host "SQL_SERVER_NAME=$SQL_SERVER_NAME"
+          echo "SQL_SERVER_NAME=$SQL_SERVER_NAME" >> $env:GITHUB_ENV
 
       - name: Get Database Name
         id: get-database-name
         run: |
-          DATABASE_NAME=$(az graph query -q "resources | where type == 'microsoft.sql/servers/databases' | where resourceGroup == '$RESOURCE_GROUP' | project name" --output tsv)
-          echo "DATABASE_NAME=$DATABASE_NAME" >> $GITHUB_ENV
+          $DATABASE_NAME = & az graph query -q "resources | where type == 'microsoft.sql/servers/databases' | where resourceGroup == '$env:RESOURCE_GROUP' | project name" --output tsv
+          Write-Host "DATABASE_NAME=$DATABASE_NAME"
+          echo "DATABASE_NAME=$DATABASE_NAME" >> $env:GITHUB_ENV
 
       - name: Retrieve SQL Username and Password
         id: get-credentials
         run: |
-          SQL_USERNAME=${{ secrets.SQL_USERNAME }}
-          SQL_PASSWORD=${{ secrets.SQL_PASSWORD }}
-          echo "SQL_USERNAME=$SQL_USERNAME" >> $GITHUB_ENV
-          echo "SQL_PASSWORD=$SQL_PASSWORD" >> $GITHUB_ENV
+          $SQL_USERNAME = $env:SQL_USERNAME
+          $SQL_PASSWORD = $env:SQL_PASSWORD
+          Write-Host "SQL_USERNAME=$SQL_USERNAME"
+          Write-Host "SQL_PASSWORD=$SQL_PASSWORD"
+          echo "SQL_USERNAME=$SQL_USERNAME" >> $env:GITHUB_ENV
+          echo "SQL_PASSWORD=$SQL_PASSWORD" >> $env:GITHUB_ENV
 
       - name: Get SQL Connection String
         id: get-connection-string
         run: |
-          CONNECTION_STRING=$(az sql db show-connection-string --name "$DATABASE_NAME" --server "$SQL_SERVER_NAME" --type ado.net --output tsv)
-          echo "CONNECTION_STRING=$CONNECTION_STRING" >> $GITHUB_ENV
+          $CONNECTION_STRING = & az sql db show-connection-string --name "$env:DATABASE_NAME" --server "$env:SQL_SERVER_NAME" --type ado.net --output tsv
+          Write-Host "CONNECTION_STRING=$CONNECTION_STRING"
+          echo "CONNECTION_STRING=$CONNECTION_STRING" >> $env:GITHUB_ENV
 
       - name: Modify Connection String with Correct Values
         run: |
-          sed -i "s/<username>/$SQL_USERNAME/g; s/<password>/$SQL_PASSWORD/g; s/<server>/$SQL_SERVER_NAME.database.windows.net/g; s/<database>/$DATABASE_NAME/g" $GITHUB_ENV
+          (Get-Content $env:GITHUB_ENV) -replace '<username>', $env:SQL_USERNAME -replace '<password>', $env:SQL_PASSWORD -replace '<server>', "$env:SQL_SERVER_NAME.database.windows.net" -replace '<database>', $env:DATABASE_NAME | Set-Content $env:GITHUB_ENV
 
       - name: Deploy SQL Database Schema
         uses: azure/sql-action@v2

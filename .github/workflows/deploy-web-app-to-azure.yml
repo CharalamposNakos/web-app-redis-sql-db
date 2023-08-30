@@ -65,7 +65,7 @@ jobs:
     - name: Get Azure Web App Publish Profile
       id: get-webapp-publish-profile
       run: |
-        WEBAPP_PUBLISH_PROFILE = az webapp deployment list-publishing-profiles --name '$env:WEBAPP_NAME' --resource-group '$env:RESOURCE_GROUP' --xml
+        $WEBAPP_PUBLISH_PROFILE = az webapp deployment list-publishing-profiles --name "$env:WEBAPP_NAME" --resource-group "$env:RESOURCE_GROUP" --xml
         echo "WEBAPP_PUBLISH_PROFILE=$WEBAPP_PUBLISH_PROFILE" >> $env:GITHUB_ENV
 
     - name: Deploy to Azure WebApp

@@ -1,24 +1,20 @@
-name: Build and Deploy SQL Database Schema
+name: Build, Deploy, and Use SQL Database Schema
 
 on:
   workflow_dispatch:
 
 env:
   SQL_SCRIPT_PATH: 'sql/ProductsDb.sql'  # Path to SQL script here
+  RESOURCE_GROUP: 'test-env'  # Set your default resource group here
 
 jobs:
-  deploy-database:
+  build-deploy-use-database:
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: pwsh
-        working-directory: src
 
     steps:
-      - name: Check out code
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      # Azure Login action for authentication
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -29,8 +25,43 @@ jobs:
         with:
           node-version: 16
 
+      - name: Get SQL Server Name
+        id: get-sql-server-name
+        run: |
+          SQL_SERVER_NAME=$(az graph query -q "resources | where type == 'microsoft.sql/servers' | where resourceGroup == '$RESOURCE_GROUP' | project name" --output tsv)
+          echo "SQL_SERVER_NAME=$SQL_SERVER_NAME" >> $GITHUB_ENV
+
+      - name: Get Database Name
+        id: get-database-name
+        run: |
+          DATABASE_NAME=$(az graph query -q "resources | where type == 'microsoft.sql/servers/databases' | where resourceGroup == '$RESOURCE_GROUP' | project name" --output tsv)
+          echo "DATABASE_NAME=$DATABASE_NAME" >> $GITHUB_ENV
+
+      - name: Retrieve SQL Username and Password
+        id: get-credentials
+        run: |
+          SQL_USERNAME=${{ secrets.SQL_USERNAME }}
+          SQL_PASSWORD=${{ secrets.SQL_PASSWORD }}
+          echo "SQL_USERNAME=$SQL_USERNAME" >> $GITHUB_ENV
+          echo "SQL_PASSWORD=$SQL_PASSWORD" >> $GITHUB_ENV
+
+      - name: Get SQL Connection String
+        id: get-connection-string
+        run: |
+          CONNECTION_STRING=$(az sql db show-connection-string --name "$DATABASE_NAME" --server "$SQL_SERVER_NAME" --type ado.net --output tsv)
+          echo "CONNECTION_STRING=$CONNECTION_STRING" >> $GITHUB_ENV
+
+      - name: Modify Connection String with Correct Values
+        run: |
+          sed -i "s/<username>/$SQL_USERNAME/g; s/<password>/$SQL_PASSWORD/g; s/<server>/$SQL_SERVER_NAME.database.windows.net/g; s/<database>/$DATABASE_NAME/g" $GITHUB_ENV
+
       - name: Deploy SQL Database Schema
         uses: azure/sql-action@v2
         with:
-          connection-string: ${{ secrets.DB_CONNECTION_STRING }}
+          connection-string: ${{ env.CONNECTION_STRING }}
           path: ${{ env.SQL_SCRIPT_PATH }}
+
+      - name: Azure Logout
+        run: az logout
+
+      # Add more steps here as needed for your application, such as running tests, deploying your app, etc.

@@ -19,7 +19,7 @@ on:
     branches:
       - main
 env:
-  AZURE_WEBAPP_NAME: Control-Tower-Web-App000
+  AZURE_WEBAPP_NAME: Control-Tower-Web-App007
   AZURE_WEBAPP_PACKAGE_PATH: ./publish
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 3.1.x

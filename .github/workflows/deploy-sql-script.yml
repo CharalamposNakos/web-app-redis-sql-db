@@ -40,12 +40,8 @@ jobs:
       - name: Retrieve SQL Username and Password
         id: get-credentials
         run: |
-          $SQL_USERNAME = $env:SQL_USERNAME
-          $SQL_PASSWORD = $env:SQL_PASSWORD
-          Write-Host "SQL_USERNAME=$SQL_USERNAME"
-          Write-Host "SQL_PASSWORD=$SQL_PASSWORD"
-          echo "SQL_USERNAME=$SQL_USERNAME" >> $env:GITHUB_ENV
-          echo "SQL_PASSWORD=$SQL_PASSWORD" >> $env:GITHUB_ENV
+          echo "SQL_USERNAME=${{ secrets.SQL_USERNAME }}" >> $env:GITHUB_ENV
+          echo "SQL_PASSWORD=${{ secrets.SQL_PASSWORD }}" >> $env:GITHUB_ENV
 
       - name: Get SQL Connection String
         id: get-connection-string

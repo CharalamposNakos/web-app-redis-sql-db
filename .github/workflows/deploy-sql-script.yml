@@ -60,6 +60,10 @@ jobs:
         run: |
           (Get-Content $env:GITHUB_ENV) -replace '<username>', $env:SQL_USERNAME -replace '<password>', $env:SQL_PASSWORD -replace '<server>', "$env:SQL_SERVER_NAME.database.windows.net" -replace '<database>', $env:DATABASE_NAME | Set-Content $env:GITHUB_ENV
 
+      - name: Print Modified Connection String
+        run: |
+          Write-Host "Modified Connection String: $env:CONNECTION_STRING"
+
       - name: Deploy SQL Database Schema
         uses: azure/sql-action@v2
         with:

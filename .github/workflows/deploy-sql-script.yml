@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  SQL_SCRIPT_PATH: 'sql/Delete_ProductsDb.sql'  # Path to SQL script here
+  SQL_SCRIPT_PATH: 'sql/ProductsDb.sql'  # Path to SQL script here
   RESOURCE_GROUP: 'test-env'  # Set your default resource group here
 
 jobs:

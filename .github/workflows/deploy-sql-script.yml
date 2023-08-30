@@ -23,16 +23,19 @@ jobs:
       - name: Get SQL Server Name
         id: get-sql-server-name
         run: |
-          $SQL_SERVER_NAME = & az graph query -q "resources | where type == 'microsoft.sql/servers' | where resourceGroup == '$env:RESOURCE_GROUP' | project name" --output tsv
+          $jsonOutput = az graph query -q "resources | where type == 'microsoft.sql/servers' | where resourceGroup == '$env:RESOURCE_GROUP' | project name" --output json
+          $SQL_SERVER_NAME = ($jsonOutput | ConvertFrom-Json).data[0].name
           Write-Host "SQL_SERVER_NAME=$SQL_SERVER_NAME"
           echo "SQL_SERVER_NAME=$SQL_SERVER_NAME" >> $env:GITHUB_ENV
 
       - name: Get Database Name
         id: get-database-name
         run: |
-          $DATABASE_NAME = & az graph query -q "resources | where type == 'microsoft.sql/servers/databases' | where resourceGroup == '$env:RESOURCE_GROUP' | project name" --output tsv
+          $jsonOutput = az graph query -q "resources | where type == 'microsoft.sql/servers/databases' | where resourceGroup == '$env:RESOURCE_GROUP' | project name" --output json
+          $DATABASE_NAME = ($jsonOutput | ConvertFrom-Json).data[0].name
           Write-Host "DATABASE_NAME=$DATABASE_NAME"
           echo "DATABASE_NAME=$DATABASE_NAME" >> $env:GITHUB_ENV
+
 
       - name: Retrieve SQL Username and Password
         id: get-credentials

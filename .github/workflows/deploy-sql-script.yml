@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  SQL_SCRIPT_PATH: 'sql/ProductsDb.sql'  # Path to SQL script here
+  SQL_SCRIPT_PATH: 'sql/Delete_ProductsDb.sql'  # Path to SQL script here
   RESOURCE_GROUP: 'test-env'  # Set your default resource group here
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Azure Login
         uses: azure/login@v1
@@ -56,12 +56,10 @@ jobs:
           echo "CONNECTION_STRING=$MODIFIED_CONNECTION_STRING" >> $env:GITHUB_ENV
 
       - name: Deploy SQL Database Schema
-        uses: azure/sql-action@v2
+        uses: azure/sql-action@v2.2
         with:
           connection-string: ${{ env.CONNECTION_STRING }}
           path: ${{ env.SQL_SCRIPT_PATH }}
 
       - name: Azure Logout
         run: az logout
-
-      # Add more steps here as needed for your application, such as running tests, deploying your app, etc.

@@ -57,7 +57,7 @@ jobs:
     - name: Get Azure Web App Name
       id: get-webapp-name
       run: |
-        $jsonOutput = az graph query -q "resources | where type == 'microsoft.web/sites' | where resourceGroup == "$env:RESOURCE_GROUP" | project name" --output json
+        $jsonOutput = az graph query -q "resources | where type == 'microsoft.web/sites' | where resourceGroup == '$env:RESOURCE_GROUP' | project name" --output json
         $WEBAPP_NAME= ($jsonOutput | ConvertFrom-Json).data[0].name
         echo "WEBAPP_NAME=$WEBAPP_NAME" >> $env:GITHUB_ENV
 
@@ -65,7 +65,7 @@ jobs:
     - name: Get Azure Web App Publish Profile
       id: get-webapp-publish-profile
       run: |
-        WEBAPP_PUBLISH_PROFILE = az webapp deployment list-publishing-profiles --name "$env:WEBAPP_NAME" --resource-group "$env:RESOURCE_GROUP" --xml
+        WEBAPP_PUBLISH_PROFILE = az webapp deployment list-publishing-profiles --name '$env:WEBAPP_NAME' --resource-group '$env:RESOURCE_GROUP' --xml
         echo "WEBAPP_PUBLISH_PROFILE=$WEBAPP_PUBLISH_PROFILE" >> $env:GITHUB_ENV
 
     - name: Deploy to Azure WebApp

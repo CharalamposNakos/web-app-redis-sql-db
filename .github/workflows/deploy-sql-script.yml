@@ -63,7 +63,3 @@ jobs:
 
       - name: Azure Logout
         run: az logout
-        
-      # Set the output for the second workflow to access
-      - name: Set SQL Deployment Status
-        run: echo "DEPLOY_SQL_STATUS=success" >> $GITHUB_ENV

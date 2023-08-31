@@ -54,6 +54,7 @@ jobs:
         run: |
           $MODIFIED_CONNECTION_STRING = $env:CONNECTION_STRING -replace '<username>', $env:SQL_USERNAME -replace '<password>', $env:SQL_PASSWORD
           echo "CONNECTION_STRING=$MODIFIED_CONNECTION_STRING" >> $env:GITHUB_ENV
+          echo "Modified Connection String: << $MODIFIED_CONNECTION_STRING >>"
 
       - name: Deploy SQL Database Schema
         uses: azure/sql-action@v2.2

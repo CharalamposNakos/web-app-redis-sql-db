@@ -1,7 +1,10 @@
 name: Build, Deploy, and Use SQL Database Schema
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Deploy ARM Template"]
+    types:
+      - completed
 
 env:
   SQL_SCRIPT_PATH: 'sql/ProductsDb.sql'  # Path to SQL script here

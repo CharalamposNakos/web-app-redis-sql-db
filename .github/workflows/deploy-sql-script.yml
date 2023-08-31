@@ -27,7 +27,6 @@ jobs:
           $SQL_SERVER_NAME = ($jsonOutput | ConvertFrom-Json).data[0].name
           Write-Host "SQL_SERVER_NAME=$SQL_SERVER_NAME"
           echo "SQL_SERVER_NAME=$SQL_SERVER_NAME" >> $env:GITHUB_ENV
-          echo "SQL_SERVER_NAME=$SQL_SERVER_NAME"
 
       - name: Get Database Name
         id: get-database-name
@@ -36,7 +35,6 @@ jobs:
           $DATABASE_NAME = ($jsonOutput | ConvertFrom-Json).data[0].name
           Write-Host "DATABASE_NAME=$DATABASE_NAME"
           echo "DATABASE_NAME=$DATABASE_NAME" >> $env:GITHUB_ENV
-          echo "DATABASE_NAME=$DATABASE_NAME"
 
       - name: Retrieve SQL Username and Password
         id: get-credentials
@@ -55,7 +53,6 @@ jobs:
         run: |
           $MODIFIED_CONNECTION_STRING = $env:CONNECTION_STRING -replace '<username>', $env:SQL_USERNAME -replace '<password>', $env:SQL_PASSWORD
           echo "CONNECTION_STRING=$MODIFIED_CONNECTION_STRING" >> $env:GITHUB_ENV
-          echo "Modified Connection String: $MODIFIED_CONNECTION_STRING"
 
       - name: Deploy SQL Database Schema
         uses: azure/sql-action@v2.2

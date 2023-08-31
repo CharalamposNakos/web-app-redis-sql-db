@@ -169,7 +169,7 @@
     },
     "diskStorageAccounType": {
       "type": "string",
-      "defaultValue": "Premium_LRS",
+      "defaultValue": "Standard_LRS",
       "allowedValues": [
         "Standard_LRS",
         "Standard_GRS",
@@ -480,7 +480,7 @@
     },
     "sqlServerDatabaseCapacity": {
       "type": "int",
-      "defaultValue": 4,
+      "defaultValue": 2,
       "metadata": {
         "description": "Specifies the capacity of the SQL Server database."
       }
@@ -519,7 +519,7 @@
     },
     "defaultCapacity": {
       "type": "int",
-      "defaultValue": 5,
+      "defaultValue": 2,
       "metadata": {
         "description": "Specifies the default capacity.  Autoscale engine will preventively set the instance count to be this value if it can not find any metric data."
       }

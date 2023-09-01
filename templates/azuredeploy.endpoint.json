@@ -148,7 +148,7 @@
     },
     "imageSku": {
       "type": "string",
-      "defaultValue": "21h2-pro",
+      "defaultValue": "win10-22h2-pro",
       "metadata": {
         "description": "Specifies the Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version."
       }

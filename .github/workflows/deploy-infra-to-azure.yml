@@ -6,6 +6,7 @@ on:
 env:
   RESOURCE_GROUP: 'test-env'  # Set your target resource group name
   TEMPLATE_FILE: 'templates/azuredeploy.endpoint.json'  # Path to ARM template JSON file
+  Deployment_Name: 'azuredeploy.endpoint'
 
 jobs:
   deploy-arm-template:
@@ -27,5 +28,5 @@ jobs:
         
       - name: Check Deployment Status
         run: |
-          deploymentStatus=$(az deployment group show --name ${{ steps.deploy-arm.outputs.id }} --resource-group ${{ env.RESOURCE_GROUP }} --query properties.provisioningState -o tsv)
-          echo "Deployment Status: $deploymentStatus"
+          $deploymentStatus = az deployment group show --name $env:Deployment_Name --resource-group $env:RESOURCE_GROUP --query properties.provisioningState -o tsv
+          Write-Host "Deployment Status: $deploymentStatus"

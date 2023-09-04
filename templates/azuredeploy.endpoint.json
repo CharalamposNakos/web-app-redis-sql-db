@@ -337,7 +337,7 @@
         "Standard",
         "Premium"
       ],
-      "defaultValue": "Free",
+      "defaultValue": "PerGB2018",
       "metadata": {
         "description": "Specifies the SKU of the Log Analytics workspace."
       }

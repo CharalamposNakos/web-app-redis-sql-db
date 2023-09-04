@@ -1,0 +1,21 @@
+name: Build, Deploy, and Use SQL Database Schema
+
+on:
+  workflow_dispatch:
+
+env:
+  SQL_SCRIPT_PATH: 'sql/ProductsDb.sql'  # Path to SQL script here
+  RESOURCE_GROUP: 'test-env'  # Set your default resource group here
+
+jobs:
+  build-deploy-use-database:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: List Files
+        run: |
+          ls -R  # List all files in the working directory
+          ls -R sql  # List all files in the sql subdirectory

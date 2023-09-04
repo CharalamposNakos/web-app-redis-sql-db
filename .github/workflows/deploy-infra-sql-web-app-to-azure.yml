@@ -11,7 +11,7 @@ env:
   RESOURCE_GROUP: 'test-env'  # Set your target resource group name
   TEMPLATE_FILE: 'templates/azuredeploy.endpoint.json'  # Path to ARM template JSON file
   Deployment_Name: 'azuredeploy.endpoint'
-  SQL_SCRIPT_PATH: '../sql/ProductsDb.sql'  # Path to SQL script here
+  SQL_SCRIPT_PATH: 'sql/ProductsDb.sql'  # Path to SQL script here
   AZURE_WEBAPP_PACKAGE_PATH: ./publish
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 3.1.x
@@ -63,6 +63,9 @@ jobs:
         run: |
           $MODIFIED_CONNECTION_STRING = $env:CONNECTION_STRING -replace '<username>', $env:SQL_USERNAME -replace '<password>', $env:SQL_PASSWORD
           echo "CONNECTION_STRING=$MODIFIED_CONNECTION_STRING" >> $env:GITHUB_ENV
+      - name: Display Current Working Directory
+        run: |
+          echo "Current Working Directory: $(pwd)"
 
       - name: Deploy SQL Database Schema
         uses: azure/sql-action@v2.2

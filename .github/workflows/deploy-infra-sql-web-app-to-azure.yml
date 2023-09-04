@@ -34,15 +34,15 @@ jobs:
       - name: Deploy Infra SQL WebApp
         run: |
           # Check if the resource group already exists
-          rgExists=$(az group exists --name ${{ env.RESOURCE_GROUP }})
+          $rgExists = az group exists --name $env:RESOURCE_GROUP
       
-          if [ "$rgExists" == "false" ]; then
+          if ($rgExists -eq "False") {
             # Resource group doesn't exist, create it
-            az group create --name ${{ env.RESOURCE_GROUP }} --location "West Europe"
-          fi
+            az group create --name $env:RESOURCE_GROUP --location "West Europe"
+          }
           # Continue with the deployment
-          az deployment group create --resource-group ${{ env.RESOURCE_GROUP }} --template-file ${{ env.TEMPLATE_FILE }}
-        
+          az deployment group create --resource-group $env:RESOURCE_GROUP --template-file $env:TEMPLATE_FILE
+              
       - name: Check Deployment Status
         run: |
           $deploymentStatus = az deployment group show --name $env:Deployment_Name --resource-group $env:RESOURCE_GROUP --query properties.provisioningState -o tsv

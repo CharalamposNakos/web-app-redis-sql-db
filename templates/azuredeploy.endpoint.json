@@ -337,7 +337,7 @@
         "Standard",
         "Premium"
       ],
-      "defaultValue": "PerGB2018",
+      "defaultValue": "Free",
       "metadata": {
         "description": "Specifies the SKU of the Log Analytics workspace."
       }
@@ -356,7 +356,7 @@
         "Standard",
         "Premium"
       ],
-      "defaultValue": "Standard",
+      "defaultValue": "Basic",
       "metadata": {
         "description": "Specifies the pricing tier of the new Azure Redis Cache."
       }
@@ -468,7 +468,7 @@
     },
     "edition": {
       "type": "string",
-      "defaultValue": "Standard",
+      "defaultValue": "Basic",
       "allowedValues": [
         "Basic",
         "Standard",

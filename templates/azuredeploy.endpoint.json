@@ -4,7 +4,7 @@
   "parameters": {
     "webAppName": {
       "type": "string",
-      "defaultValue": "Control-Tower-Web-App011",
+      "defaultValue": "Control-Tower-Web-App012",
       "metadata": {
         "description": "Specifies the name of the Web App."
       }

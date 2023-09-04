@@ -19,34 +19,10 @@ env:
   #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # You might need this to trigger the second and third workflows
 
 jobs:
-  deploy-arm-template:
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Deploy Infra SQL WebApp
-        id: deploy-arm
-        run: |
-          az deployment group create --resource-group ${{ env.RESOURCE_GROUP }} --template-file ${{ env.TEMPLATE_FILE }}
-        
-      - name: Check Deployment Status
-        run: |
-          $deploymentStatus = az deployment group show --name $env:Deployment_Name --resource-group $env:RESOURCE_GROUP --query properties.provisioningState -o tsv
-          Write-Host "Deployment Status: $deploymentStatus"
-
-      - name: Azure Logout
-        run: az logout
-
+  
   build-deploy-use-database:
     runs-on: windows-latest
-    needs: deploy-arm-template  # This job depends on the completion of the first job
+    #needs: deploy-arm-template  # This job depends on the completion of the first job
 
     steps:
       - name: Azure Login

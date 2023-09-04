@@ -20,7 +20,7 @@ env:
 
 jobs:
   build-deploy-use-database:
-  runs-on: windows-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code

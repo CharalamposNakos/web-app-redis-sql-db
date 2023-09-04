@@ -19,12 +19,13 @@ env:
   #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # You might need this to trigger the second and third workflows
 
 jobs:
-  
   build-deploy-use-database:
-    runs-on: windows-latest
-    #needs: deploy-arm-template  # This job depends on the completion of the first job
+  runs-on: windows-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -63,74 +64,17 @@ jobs:
         run: |
           $MODIFIED_CONNECTION_STRING = $env:CONNECTION_STRING -replace '<username>', $env:SQL_USERNAME -replace '<password>', $env:SQL_PASSWORD
           echo "CONNECTION_STRING=$MODIFIED_CONNECTION_STRING" >> $env:GITHUB_ENV
-      - name: Display Current Working Directory
-        run: |
-          echo "Current Working Directory: $(pwd)"
 
       - name: Deploy SQL Database Schema
         uses: azure/sql-action@v2.2
         with:
           connection-string: ${{ env.CONNECTION_STRING }}
           path: ${{ env.SQL_SCRIPT_PATH }}
-
+          
+      - name: Display Current Working Directory
+        run: |
+          echo "Current Working Directory: $(pwd)"
+          
       - name: Azure Logout
         run: az logout
-
-  build-and-deploy-webapp:
-    runs-on: windows-latest
-    needs: build-deploy-use-database  # This job depends on the completion of the second job
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
-
-      - name: Restore
-        run: dotnet restore "${{ env.WORKING_DIRECTORY }}"
-
-      - name: Build
-        run: dotnet build "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-restore
-
-      - name: Test
-        run: dotnet test "${{ env.WORKING_DIRECTORY }}" --no-build
-
-      - name: Publish
-        run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
-
-      - name: Get Azure Web App Name
-        id: get-webapp-name
-        run: |
-          $jsonOutput = az graph query -q "resources | where type == 'microsoft.web/sites' | where resourceGroup == '$env:RESOURCE_GROUP' | project name" --output json
-          $WEBAPP_NAME= ($jsonOutput | ConvertFrom-Json).data[0].name
-          echo "WEBAPP_NAME=$WEBAPP_NAME" >> $env:GITHUB_ENV
-
-      - name: Get Azure Web App Publish Profile
-        id: get-webapp-publish-profile
-        run: |
-          $WEBAPP_PUBLISH_PROFILE = az webapp deployment list-publishing-profiles --name "$env:WEBAPP_NAME" --resource-group "$env:RESOURCE_GROUP" --xml
-          echo "WEBAPP_PUBLISH_PROFILE=$WEBAPP_PUBLISH_PROFILE" >> $env:GITHUB_ENV
-
-      - name: Deploy to Azure WebApp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.WEBAPP_NAME }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-          publish-profile: ${{ env.WEBAPP_PUBLISH_PROFILE }}
-
-      - name: Publish Artifacts
-        uses: actions/upload-artifact@v1.0.0
-        with:
-          name: webapp
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-
-      - name: Azure Logout
-        run: az logout
+      

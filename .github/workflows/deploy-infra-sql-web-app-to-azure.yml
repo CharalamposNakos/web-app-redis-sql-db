@@ -32,8 +32,15 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Deploy Infra SQL WebApp
-        id: deploy-arm
         run: |
+          # Check if the resource group already exists
+          rgExists=$(az group exists --name ${{ env.RESOURCE_GROUP }})
+      
+          if [ "$rgExists" == "false" ]; then
+            # Resource group doesn't exist, create it
+            az group create --name ${{ env.RESOURCE_GROUP }} --location "West Europe"
+          fi
+          # Continue with the deployment
           az deployment group create --resource-group ${{ env.RESOURCE_GROUP }} --template-file ${{ env.TEMPLATE_FILE }}
         
       - name: Check Deployment Status

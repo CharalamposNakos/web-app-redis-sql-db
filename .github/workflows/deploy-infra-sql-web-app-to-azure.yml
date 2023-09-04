@@ -11,7 +11,7 @@ env:
   RESOURCE_GROUP: 'test-env'  # Set your target resource group name
   TEMPLATE_FILE: 'templates/azuredeploy.endpoint.json'  # Path to ARM template JSON file
   Deployment_Name: 'azuredeploy.endpoint'
-  SQL_SCRIPT_PATH: '${{ github.workspace }}/sql/ProductsDb.sql'  # Path to SQL script here
+  SQL_SCRIPT_PATH: '${{ github.workspace }}\sql\ProductsDb.sql'  # Path to SQL script here
   AZURE_WEBAPP_PACKAGE_PATH: ./publish
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 3.1.x

@@ -38,7 +38,7 @@ jobs:
       
           if ($rgExists -eq "False") {
             # Resource group doesn't exist, create it
-            az group create --name $env:RESOURCE_GROUP --location "West Europe"
+            az group create --name $env:RESOURCE_GROUP --location "West Europe" --tags ct_enviroment=demo project=control_tower ct_rg=web_app
           }
           # Continue with the deployment
           az deployment group create --resource-group $env:RESOURCE_GROUP --template-file $env:TEMPLATE_FILE

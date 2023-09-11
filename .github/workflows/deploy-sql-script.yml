@@ -8,7 +8,7 @@ on:
 
 env:
   SQL_SCRIPT_PATH: 'sql/ProductsDb.sql'  # Path to SQL script here
-  RESOURCE_GROUP: 'test-env'  # Set your default resource group here
+  RESOURCE_GROUP: 'rg-ct-demo-webapp'  # Set your default resource group here
 
 jobs:
   build-deploy-use-database:

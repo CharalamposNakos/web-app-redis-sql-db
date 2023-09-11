@@ -10,7 +10,7 @@ env:
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 3.1.x
   WORKING_DIRECTORY: src
-  RESOURCE_GROUP: 'test-env'  # Set your default resource group here
+  RESOURCE_GROUP: 'rg-ct-demo-webapp'  # Set your default resource group here
 
 jobs:
   build-and-deploy:

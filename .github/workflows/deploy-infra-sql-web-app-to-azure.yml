@@ -8,7 +8,7 @@ on:
       - completed
 
 env:
-  RESOURCE_GROUP: 'rg-ct-demo-webapp'  # Set your target resource group name
+  RESOURCE_GROUP: 'rg-demo-webapp'  # Set your target resource group name
   TEMPLATE_FILE: 'templates/azuredeploy.endpoint.json'  # Path to ARM template JSON file
   Deployment_Name: 'azuredeploy.endpoint'
   SQL_SCRIPT_PATH: '${{ github.workspace }}\sql\ProductsDb.sql'  # Path to SQL script here  

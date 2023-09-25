@@ -89,7 +89,7 @@ jobs:
       - name: Get SQL Connection String
         id: get-connection-string
         run: |
-          $CONNECTION_STRING = & az sql db show-connection-string --name "$env:DATABASE_NAME" --server "$env:SQL_SERVER_NAME" --client ado.net --output tsv
+          $CONNECTION_STRING = az sql db show-connection-string --name "$env:DATABASE_NAME" --server "$env:SQL_SERVER_NAME" --client ado.net --output tsv
           Write-Host "CONNECTION_STRING=$CONNECTION_STRING"
           echo "CONNECTION_STRING=$CONNECTION_STRING" >> $env:GITHUB_ENV
 

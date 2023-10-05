@@ -1703,7 +1703,7 @@
         {
           "type": "providers/diagnosticSettings",
           "apiVersion": "2017-05-01-preview",
-          "name": "Microsoft.Insights/diagnosticSettings",
+          "name": "Microsoft.Insights/default",
           "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('vmSubnetNsgId')]",
@@ -1826,7 +1826,7 @@
         },
         {
           "type": "providers/diagnosticsettings",
-          "name": "Microsoft.Insights/service",
+          "name": "Microsoft.Insights/default",
           "apiVersion": "2017-05-01-preview",
           "dependsOn": [
             "[variables('webAppId')]",
@@ -1939,7 +1939,7 @@
         {
           "type": "providers/diagnosticSettings",
           "apiVersion": "2017-05-01-preview",
-          "name": "Microsoft.Insights/diagnosticSettings",
+          "name": "Microsoft.Insights/default",
           "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('redisCacheId')]",
@@ -2027,7 +2027,7 @@
             {
               "type": "providers/diagnosticSettings",
               "apiVersion": "2017-05-01-preview",
-              "name": "Microsoft.Insights/diagnosticSettings",
+              "name": "Microsoft.Insights/default",
               "location": "[parameters('location')]",
               "dependsOn": [
                 "[variables('sqlServerDatabaseId')]",
@@ -2195,7 +2195,7 @@
         },
         {
           "type": "providers/diagnosticsettings",
-          "name": "Microsoft.Insights/service",
+          "name": "Microsoft.Insights/default",
           "apiVersion": "2017-05-01-preview",
           "dependsOn": [
             "[variables('keyVaultId')]",
